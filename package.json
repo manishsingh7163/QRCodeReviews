@@ -1,0 +1,12 @@
+{
+  "name": "dukanreviews",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env --disable-warning=ExperimentalWarning server.js",
+    "test": "node --disable-warning=ExperimentalWarning test.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

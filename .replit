@@ -1,0 +1,16 @@
+run = "npm start"
+modules = ["nodejs-20"]
+
+[unitTest]
+language = "nodejs"
+
+[deployment]
+run = ["npm", "start"]
+build = ["npm", "install"]
+
+[packager]
+language = "nodejs"
+
+[[ports]]
+localPort = 3000
+externalPort = 80

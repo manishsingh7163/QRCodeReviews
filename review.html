@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leave a review</title>
+<style>/*BASE*/
+body{font-size:1.0625rem}
+.band{position:relative;overflow:hidden;color:#fff;padding:1.2rem 1rem 3.2rem;
+background:radial-gradient(18rem 10rem at 100% 0%,rgba(245,179,1,.4),transparent 70%),linear-gradient(135deg,#0B5F58,#0F766E 60%,#14B8A6)}
+.band::after{content:"";position:absolute;width:12rem;height:12rem;border-radius:50%;border:28px solid rgba(255,255,255,.07);left:-4rem;bottom:-7rem}
+.band-in{position:relative;z-index:1;max-width:480px;margin:auto;display:flex;flex-wrap:wrap;align-items:center;gap:.75rem}
+.av{display:grid;place-items:center;flex:none;width:52px;height:52px;border-radius:16px;background:#fff;color:#0F766E;font-weight:800;font-size:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.who{flex:1;min-width:10rem} .who h1{font-size:1.35rem;line-height:1.2;margin:0} .who small{opacity:.9}
+.langpick{display:inline-flex;align-items:center;gap:.3rem;margin:0;padding:0 .2rem 0 .6rem;border-radius:999px;background:rgba(255,255,255,.18);font-weight:600}
+.langpick select{width:auto;min-height:40px;border:0;background:transparent;color:#fff;padding:0 .4rem;font-weight:600}
+.langpick option{color:#2B211A}
+main{position:relative;z-index:1;max-width:480px;margin:-2.2rem auto 0;padding:0 1rem}
+.panel{background:var(--s);border:1px solid var(--b);border-radius:18px;padding:1rem 1.1rem;margin-bottom:.9rem;box-shadow:var(--shadow)}
+.rate{text-align:center} .rate p{margin:.2rem 0}
+#how{font-size:1.2rem;font-weight:700}
+.stars{display:flex;justify-content:center;gap:.2rem}
+.stars button{width:54px;height:56px;padding:0;background:none;font-size:2.8rem;line-height:1;color:var(--star0)}
+.stars button.on{color:var(--star);animation:pop .35s ease-out}
+@keyframes pop{50%{transform:scale(1.3)}}
+.mood{font-size:2rem;line-height:1;min-height:2rem;margin-top:.3rem}
+.done{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:1.5rem;background:color-mix(in srgb,var(--bg) 70%,transparent);backdrop-filter:blur(6px)}
+.done[hidden]{display:none}
+.done-card{max-width:22rem;text-align:center;background:var(--s);border-radius:22px;padding:1.8rem 1.5rem;box-shadow:var(--shadow);border:1px solid var(--b)}
+.done-card svg{display:block;margin:0 auto .8rem}
+.done-card circle{fill:var(--p)} .done-card path{stroke-dasharray:40;stroke-dashoffset:40;animation:draw .5s .15s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.by{display:flex;justify-content:center;align-items:center;gap:.4rem;margin:1.5rem 0 2rem;color:var(--m);font-size:.8125rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chips button{padding:0 .9rem;border-radius:999px;font-weight:400;background:var(--s);color:var(--t);border:1px solid var(--b2)}
+.chips button[aria-pressed=true]{background:var(--p);color:#fff;border-color:var(--p)}
+.chips button[aria-pressed=true]::before{content:"✓"}
+#list button{display:block;position:relative;width:100%;text-align:left;margin:.5rem 0;padding:.9rem 2.2rem .9rem 1rem;
+font-weight:400;line-height:1.5;background:var(--s);color:var(--t);border:1px solid var(--b);border-radius:var(--r)}
+#list button:hover{border-color:var(--b2)}
+#list button[aria-pressed=true]{background:var(--pt);border-color:var(--p);box-shadow:0 0 0 1px var(--p)}
+#list button[aria-pressed=true]::after{content:"✓";position:absolute;top:.7rem;right:.9rem;color:var(--p2);font-weight:700}
+.skeleton{height:4.5rem;margin:.5rem 0;border-radius:var(--r);background:var(--track)}
+.cta{position:sticky;bottom:0;z-index:2;background:linear-gradient(transparent,var(--bg) 25%);padding:1rem 0 max(.75rem,env(safe-area-inset-bottom))}
+#status{margin:.2rem .3rem .4rem;font-weight:600;color:var(--m)}
+#chipsWrap p{margin:0 0 .6rem;font-weight:600}
+.panel label{margin-top:0}
+.cta p{margin:.4rem 0 0;text-align:center}
+.primary{width:100%;min-height:52px;font-size:1.0625rem}
+details{margin:.5rem 0 1rem;background:var(--warm);border:1px dashed var(--b2);border-radius:var(--r);padding:0 1rem}
+summary{min-height:48px;display:flex;align-items:center;cursor:pointer;font-weight:600}
+details form{padding-bottom:1rem}
+.secondary{width:100%;margin-top:1rem;background:var(--s);color:var(--p2);border:1px solid var(--p)}
+</style>
+</head>
+<body>
+<script id="data" type="application/json">__DATA__</script>
+<header class="band"><div class="band-in">
+  <span class="av" id="av" aria-hidden="true"></span>
+  <div class="who"><h1 id="title"></h1><small data-t="sub"></small></div>
+  <label class="langpick"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+    <select id="lang" aria-label="Language / भाषा"></select></label>
+</div></header>
+<main>
+<section class="panel rate">
+  <p id="how" data-t="how"></p>
+  <div class="stars" role="group" aria-labelledby="how"></div>
+  <div class="mood" id="mood" aria-hidden="true"></div>
+  <p class="muted" id="starhint" data-t="tapStar"></p>
+</section>
+<section class="panel" id="chipsWrap" hidden><p data-t="liked"></p><div class="chips" id="chips"></div></section>
+<p id="status" aria-live="polite"></p>
+
+<div id="step2" hidden>
+  <div id="list"></div>
+  <section class="panel">
+  <label for="text" data-t="yours"></label>
+  <textarea id="text" rows="4"></textarea>
+  </section>
+  <div class="cta">
+    <button class="primary" id="go" data-t="go" disabled></button>
+    <p class="muted" id="gohint" aria-live="polite" data-t="goHint"></p>
+  </div>
+  <details>
+    <summary data-t="private"></summary>
+    <form id="fb">
+      <label for="fbmsg" data-t="msg"></label>
+      <textarea id="fbmsg" required maxlength="2000"></textarea>
+      <label for="fbcontact" data-t="contact"></label>
+      <input id="fbcontact" maxlength="200" autocomplete="tel">
+      <button class="secondary" id="fbsend" data-t="send"></button>
+    </form>
+    <p id="fbstatus" aria-live="polite"></p>
+  </details>
+</div>
+<p class="by">__LOGO__ Powered by DukanReviews</p>
+</main>
+<div class="done" id="done" hidden role="status" aria-live="assertive"><div class="done-card">
+  <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="36"/><path d="M22 37l9 9 19-20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <p id="donemsg"></p></div></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const D = JSON.parse($("data").textContent);
+const LANGS = [["English", "en", "English"], ["Hindi", "hi", "हिन्दी"], ["Marathi", "mr", "मराठी"], ["Gujarati", "gu", "ગુજરાતી"],
+  ["Tamil", "ta", "தமிழ்"], ["Telugu", "te", "తెలుగు"], ["Kannada", "kn", "ಕನ್ನಡ"], ["Malayalam", "ml", "മലയാളം"],
+  ["Bengali", "bn", "বাংলা"], ["Punjabi", "pa", "ਪੰਜਾਬੀ"], ["Odia", "or", "ଓଡ଼ିଆ"]];
+// ponytail: machine-written translations; have a native speaker check each block before launch.
+const T = {
+  en: {
+    sub: "Share your experience", how: "How was your visit?", tapStar: "Tap a star to rate", star: "stars", liked: "What did you like? (optional)",
+    loading: "Writing a few suggestions…", pick: "Tap one to use it, or write your own below:",
+    failed: "Couldn't load suggestions. Please write your own below.", yours: "Your review (edit as you like)",
+    go: "Copy & open Google", goHint: "On Google: tap the stars, then paste into the review box.",
+    copied: "Copied! On Google, press and hold the review box, then tap Paste.",
+    copyFail: "Couldn't copy automatically. Press and hold the text to copy it, then tap the button again.",
+    cont: "Continue to Google", private: "🔒 Send the owner a private message", msg: "Message (only the owner sees this)",
+    contact: "Phone or email (optional, if you'd like a reply)", send: "Send privately", sending: "Sending…",
+    sent: "Thanks! The owner will see your message.", sendFail: "Couldn't send. Please try again.",
+  },
+  hi: {
+    sub: "अपना अनुभव बताएँ", how: "आपका अनुभव कैसा रहा?", tapStar: "रेटिंग देने के लिए स्टार दबाएँ", star: "स्टार", liked: "आपको क्या अच्छा लगा? (वैकल्पिक)",
+    loading: "कुछ सुझाव लिख रहे हैं…", pick: "किसी एक को चुनें, या नीचे खुद लिखें:",
+    failed: "सुझाव नहीं आ पाए। कृपया नीचे खुद लिखें।", yours: "आपका रिव्यू (जैसे चाहें बदलें)",
+    go: "कॉपी करें और Google खोलें", goHint: "Google पर: स्टार चुनें, फिर रिव्यू बॉक्स में पेस्ट करें।",
+    copied: "कॉपी हो गया! Google पर रिव्यू बॉक्स को दबाकर रखें, फिर Paste दबाएँ।",
+    copyFail: "अपने-आप कॉपी नहीं हुआ। टेक्स्ट को दबाकर रखें और कॉपी करें, फिर बटन दोबारा दबाएँ।",
+    cont: "Google पर जाएँ", private: "🔒 मालिक को निजी संदेश भेजें", msg: "संदेश (सिर्फ़ मालिक देखेंगे)",
+    contact: "फ़ोन या ईमेल (वैकल्पिक, अगर जवाब चाहिए)", send: "निजी रूप से भेजें", sending: "भेज रहे हैं…",
+    sent: "धन्यवाद! मालिक आपका संदेश देखेंगे।", sendFail: "नहीं भेज पाए। कृपया फिर से कोशिश करें।",
+  },
+  mr: {
+    sub: "तुमचा अनुभव सांगा", how: "तुमचा अनुभव कसा होता?", tapStar: "रेटिंग देण्यासाठी स्टार दाबा", star: "स्टार", liked: "तुम्हाला काय आवडलं? (ऐच्छिक)",
+    loading: "काही सूचना लिहीत आहोत…", pick: "एक निवडा, किंवा खाली स्वतः लिहा:",
+    failed: "सूचना मिळाल्या नाहीत. कृपया खाली स्वतः लिहा.", yours: "तुमचा रिव्ह्यू (हवा तसा बदला)",
+    go: "कॉपी करा आणि Google उघडा", goHint: "Google वर: स्टार निवडा, मग रिव्ह्यू बॉक्समध्ये पेस्ट करा.",
+    copied: "कॉपी झालं! Google वर रिव्ह्यू बॉक्स दाबून धरा, मग Paste दाबा.",
+    copyFail: "आपोआप कॉपी झालं नाही. मजकूर दाबून धरून कॉपी करा, मग बटण पुन्हा दाबा.",
+    cont: "Google वर जा", private: "🔒 मालकाला खाजगी संदेश पाठवा", msg: "संदेश (फक्त मालक पाहतील)",
+    contact: "फोन किंवा ईमेल (ऐच्छिक, उत्तर हवं असल्यास)", send: "खाजगीरित्या पाठवा", sending: "पाठवत आहोत…",
+    sent: "धन्यवाद! मालक तुमचा संदेश पाहतील.", sendFail: "पाठवता आलं नाही. कृपया पुन्हा प्रयत्न करा.",
+  },
+  gu: {
+    sub: "તમારો અનુભવ જણાવો", how: "તમારો અનુભવ કેવો રહ્યો?", tapStar: "રેટિંગ આપવા સ્ટાર દબાવો", star: "સ્ટાર", liked: "તમને શું ગમ્યું? (વૈકલ્પિક)",
+    loading: "થોડા સૂચનો લખી રહ્યા છીએ…", pick: "એક પસંદ કરો, અથવા નીચે જાતે લખો:",
+    failed: "સૂચનો લોડ ન થયા. કૃપા કરીને નીચે જાતે લખો.", yours: "તમારો રિવ્યૂ (ઇચ્છો તેમ બદલો)",
+    go: "કૉપી કરો અને Google ખોલો", goHint: "Google પર: સ્ટાર પસંદ કરો, પછી રિવ્યૂ બૉક્સમાં પેસ્ટ કરો.",
+    copied: "કૉપી થઈ ગયું! Google પર રિવ્યૂ બૉક્સ દબાવી રાખો, પછી Paste દબાવો.",
+    copyFail: "આપમેળે કૉપી ન થયું. લખાણ દબાવી રાખીને કૉપી કરો, પછી બટન ફરી દબાવો.",
+    cont: "Google પર જાઓ", private: "🔒 માલિકને ખાનગી સંદેશ મોકલો", msg: "સંદેશ (ફક્ત માલિક જોશે)",
+    contact: "ફોન અથવા ઇમેઇલ (વૈકલ્પિક, જવાબ જોઈએ તો)", send: "ખાનગી રીતે મોકલો", sending: "મોકલી રહ્યા છીએ…",
+    sent: "આભાર! માલિક તમારો સંદેશ જોશે.", sendFail: "મોકલી ન શકાયું. કૃપા કરીને ફરી પ્રયાસ કરો.",
+  },
+  ta: {
+    sub: "உங்கள் அனுபவத்தைப் பகிருங்கள்", how: "உங்கள் அனுபவம் எப்படி இருந்தது?", tapStar: "மதிப்பிட ஒரு நட்சத்திரத்தைத் தட்டவும்", star: "நட்சத்திரங்கள்", liked: "உங்களுக்கு என்ன பிடித்தது? (விருப்பம்)",
+    loading: "சில பரிந்துரைகளை எழுதுகிறோம்…", pick: "ஒன்றைத் தேர்ந்தெடுக்கவும், அல்லது கீழே நீங்களே எழுதவும்:",
+    failed: "பரிந்துரைகளை ஏற்ற முடியவில்லை. கீழே நீங்களே எழுதவும்.", yours: "உங்கள் விமர்சனம் (விருப்பப்படி மாற்றலாம்)",
+    go: "நகலெடுத்து Google-ஐத் திறக்கவும்", goHint: "Google-இல்: நட்சத்திரங்களைத் தட்டி, விமர்சனப் பெட்டியில் ஒட்டவும்.",
+    copied: "நகலெடுக்கப்பட்டது! Google-இல் விமர்சனப் பெட்டியை அழுத்திப் பிடித்து, Paste-ஐத் தட்டவும்.",
+    copyFail: "தானாக நகலெடுக்க முடியவில்லை. உரையை அழுத்திப் பிடித்து நகலெடுத்து, பொத்தானை மீண்டும் தட்டவும்.",
+    cont: "Google-க்குச் செல்லவும்", private: "🔒 உரிமையாளருக்கு தனிப்பட்ட செய்தி அனுப்பவும்", msg: "செய்தி (உரிமையாளர் மட்டும் பார்ப்பார்)",
+    contact: "தொலைபேசி அல்லது மின்னஞ்சல் (விருப்பம், பதில் வேண்டுமெனில்)", send: "தனிப்பட்ட முறையில் அனுப்பவும்", sending: "அனுப்புகிறோம்…",
+    sent: "நன்றி! உரிமையாளர் உங்கள் செய்தியைப் பார்ப்பார்.", sendFail: "அனுப்ப முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
+  },
+  te: {
+    sub: "మీ అనుభవాన్ని పంచుకోండి", how: "మీ అనుభవం ఎలా ఉంది?", tapStar: "రేటింగ్ ఇవ్వడానికి నక్షత్రాన్ని నొక్కండి", star: "నక్షత్రాలు", liked: "మీకు ఏమి నచ్చింది? (ఐచ్ఛికం)",
+    loading: "కొన్ని సూచనలు రాస్తున్నాం…", pick: "ఒకదాన్ని ఎంచుకోండి, లేదా కింద మీరే రాయండి:",
+    failed: "సూచనలు లోడ్ కాలేదు. దయచేసి కింద మీరే రాయండి.", yours: "మీ రివ్యూ (మీకు నచ్చినట్లు మార్చండి)",
+    go: "కాపీ చేసి Google తెరవండి", goHint: "Google లో: నక్షత్రాలు నొక్కి, రివ్యూ బాక్స్‌లో పేస్ట్ చేయండి.",
+    copied: "కాపీ అయింది! Google లో రివ్యూ బాక్స్‌ను నొక్కి పట్టుకుని, Paste నొక్కండి.",
+    copyFail: "ఆటోమేటిక్‌గా కాపీ కాలేదు. టెక్స్ట్‌���ు నొక్కి పట్టుకుని కాపీ చేసి, బటన్‌ను మళ్ళీ నొక్కండి.",
+    cont: "Google కి వెళ్ళండి", private: "🔒 యజమానికి ప్రైవేట్ సందేశం పంపండి", msg: "సందేశం (యజమాని మాత్రమే చూస్తారు)",
+    contact: "ఫోన్ లేదా ఈమెయిల్ (ఐచ్ఛికం, జవాబు కావాలంటే)", send: "ప్రైవేట్‌గా పంపండి", sending: "పంపుతున్నాం…",
+    sent: "ధన్యవాదాలు! యజమాని మీ సందేశాన్ని చూస్తారు.", sendFail: "పంపలేకపోయాం. దయచేసి మళ్ళీ ప్రయత్నించండి.",
+  },
+  kn: {
+    sub: "ನಿಮ್ಮ ಅನುಭವವನ್ನು ಹಂಚಿಕೊಳ್ಳಿ", how: "ನಿಮ್ಮ ಅನುಭವ ಹೇಗಿತ್ತು?", tapStar: "ರೇಟಿಂಗ್ ನೀಡಲು ನಕ್ಷತ್ರವನ್ನು ಒತ್ತಿ", star: "ನಕ್ಷತ್ರಗಳು", liked: "ನಿಮಗೆ ಏನು ಇಷ್ಟವಾಯಿತು? (ಐಚ್ಛಿಕ)",
+    loading: "ಕೆಲವು ಸಲಹೆಗಳನ್ನು ಬರೆಯುತ್ತಿದ್ದೇವೆ…", pick: "ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ, ಅಥವಾ ಕೆಳಗೆ ನೀವೇ ಬರೆಯಿರಿ:",
+    failed: "ಸಲಹೆಗಳು ಲೋಡ್ ಆಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಕೆಳಗೆ ನೀವೇ ಬರೆಯಿರಿ.", yours: "ನಿಮ್ಮ ವಿಮರ್ಶೆ (ಬೇಕಾದಂತೆ ಬದಲಿಸಿ)",
+    go: "ಕಾಪಿ ಮಾಡಿ Google ತೆರೆಯಿರಿ", goHint: "Google ನಲ್ಲಿ: ನಕ್ಷತ್ರಗಳನ್ನು ಒತ್ತಿ, ನಂತರ ವಿಮರ್ಶೆ ಬಾಕ್ಸ್‌ನಲ್ಲಿ ಪೇಸ್ಟ್ ಮಾಡಿ.",
+    copied: "ಕಾಪಿ ಆಯಿತು! Google ನಲ್ಲಿ ವಿಮರ್ಶೆ ಬಾಕ್ಸ್ ಅನ್ನು ಒತ್ತಿ ಹಿಡಿದು, Paste ಒತ್ತಿ.",
+    copyFail: "ತಾನಾಗಿ ಕಾಪಿ ಆಗಲಿಲ್ಲ. ಪಠ್ಯವನ್ನು ಒತ್ತಿ ಹಿಡಿದು ಕಾಪಿ ಮಾಡಿ, ನಂತರ ಬಟನ್ ಮತ್ತೆ ಒತ್ತಿ.",
+    cont: "Google ಗೆ ಹೋಗಿ", private: "🔒 ಮಾಲೀಕರಿಗೆ ಖಾಸಗಿ ಸಂದೇಶ ಕಳುಹಿಸಿ", msg: "ಸಂದೇಶ (ಮಾಲೀಕರು ಮಾತ್ರ ನೋಡುತ್ತಾರೆ)",
+    contact: "ಫೋನ್ ಅಥವಾ ಇಮೇಲ್ (ಐಚ್ಛಿಕ, ಉತ್ತರ ಬೇಕಿದ್ದರೆ)", send: "ಖಾಸಗಿಯಾಗಿ ಕಳುಹಿಸಿ", sending: "ಕಳುಹಿಸುತ್ತಿದ್ದೇವೆ…",
+    sent: "ಧನ್ಯವಾದಗಳು! ಮಾಲೀಕರು ನಿಮ್ಮ ಸಂದೇಶವನ್ನು ನೋಡುತ್ತಾರೆ.", sendFail: "ಕಳುಹಿಸಲಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.",
+  },
+  ml: {
+    sub: "നിങ്ങളുടെ അനുഭവം പങ്കുവെക്കൂ", how: "നിങ്ങളുടെ അനുഭവം എങ്ങനെയായിരുന്നു?", tapStar: "റേറ്റിംഗ് നൽകാൻ ഒരു നക്ഷത്രം അമർത്തുക", star: "നക്ഷത്രങ്ങൾ", liked: "നിങ്ങൾക്ക് എന്താണ് ഇഷ്ടപ്പെട്ടത്? (ഐച്ഛികം)",
+    loading: "കുറച്ച് നിർദ്ദേശങ്ങൾ എഴുതുന്നു…", pick: "ഒന്ന് തിരഞ്ഞെടുക്കുക, അല്ലെങ്കിൽ താഴെ സ്വയം എഴുതുക:",
+    failed: "നിർദ്ദേശങ്ങൾ ലഭിച്ചില്ല. ദയവായി താഴെ സ്വയം എഴുതുക.", yours: "നിങ്ങളുടെ റിവ്യൂ (ഇഷ്ടം പോലെ മാറ്റാം)",
+    go: "കോപ്പി ചെയ്ത് Google തുറക്കുക", goHint: "Google-ൽ: നക്ഷത്രങ്ങൾ അമർത്തി, റിവ്യൂ ബോക്സിൽ പേസ്റ്റ് ചെയ്യുക.",
+    copied: "കോപ്പി ചെയ്തു! Google-ൽ റിവ്യൂ ബോക്സ് അമർത്തിപ്പിടിച്ച്, Paste അമർത്തുക.",
+    copyFail: "സ്വയം കോപ്പി ആയില്ല. ടെക്സ്റ്റ് അമർത്തിപ്പിടിച്ച് കോപ്പി ചെയ്ത്, ബട്ടൺ വീണ്ടും അമർത്തുക.",
+    cont: "Google-ലേക്ക് പോകുക", private: "🔒 ഉടമയ്ക്ക് സ്വകാര്യ സന്ദേശം അയയ്ക്കുക", msg: "സന്ദേശം (ഉടമ മാത്രം കാണും)",
+    contact: "ഫോൺ അല്ലെങ്കിൽ ഇമെയിൽ (ഐച്ഛികം, മറുപടി വേണമെങ്കിൽ)", send: "സ്വകാര്യമായി അയയ്ക്കുക", sending: "അയയ്ക്കുന്നു…",
+    sent: "നന്ദി! ഉടമ നിങ്ങളുടെ സന്ദേശം കാണും.", sendFail: "അയയ്ക്കാൻ കഴിഞ്ഞില്ല. ദയവായി വീണ്ടും ശ്രമിക്കുക.",
+  },
+  bn: {
+    sub: "আপনার অভিজ্ঞতা জানান", how: "আপনার অভিজ্ঞতা কেমন ছিল?", tapStar: "রেটিং দিতে একটি তারা চাপুন", star: "তারা", liked: "আপনার কী ভালো লেগেছে? (ঐচ্ছিক)",
+    loading: "কয়েকটি পরামর্শ লেখা হচ্ছে…", pick: "একটি বেছে নিন, অথবা নিচে নিজে লিখুন:",
+    failed: "পরামর্শ লোড হয়নি। অনুগ্রহ করে নিচে নিজে লিখুন।", yours: "আপনার রিভিউ (ইচ্ছেমতো বদলান)",
+    go: "কপি করুন ও Google খুলুন", goHint: "Google-এ: তারা বেছে নিন, তারপর রিভিউ বক্সে পেস্ট করুন।",
+    copied: "কপি হয়েছে! Google-এ রিভিউ বক্সটি চেপে ধরে Paste চাপুন।",
+    copyFail: "নিজে থেকে কপি হয়নি। লেখাটি চেপে ধরে কপি করুন, তারপর বোতামটি আবার চাপুন।",
+    cont: "Google-এ যান", private: "🔒 মালিককে ব্যক্তিগত বার্তা পাঠান", msg: "বার্তা (শুধু মালিক দেখবেন)",
+    contact: "ফোন বা ইমেল (ঐচ্ছিক, উত্তর চাইলে)", send: "ব্যক্তিগতভাবে পাঠান", sending: "পাঠানো হচ্ছে…",
+    sent: "ধন্যবাদ! মালিক আপনার বার্তা দেখবেন।", sendFail: "পাঠানো যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।",
+  },
+  pa: {
+    sub: "ਆਪਣਾ ਅਨੁਭਵ ਸਾਂਝਾ ਕਰੋ", how: "ਤੁਹਾਡਾ ਅਨੁਭਵ ਕਿਵੇਂ ਰਿਹਾ?", tapStar: "ਰੇਟਿੰਗ ਦੇਣ ਲਈ ਸਟਾਰ ਦਬਾਓ", star: "ਸਟਾਰ", liked: "ਤੁਹਾਨੂੰ ਕੀ ਪਸੰਦ ਆਇਆ? (ਵਿਕਲਪਿਕ)",
+    loading: "ਕੁਝ ਸੁਝਾਅ ਲਿਖ ��ਹੇ ਹਾਂ…", pick: "ਇੱਕ ਚੁਣੋ, ਜਾਂ ਹੇਠਾਂ ਆਪ ਲਿਖੋ:",
+    failed: "ਸੁਝਾਅ ਲੋਡ ਨਹੀਂ ਹੋਏ। ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਆਪ ਲਿਖ��।", yours: "ਤੁਹਾਡਾ ਰਿਵਿਊ (ਜਿਵੇਂ ਚਾਹੋ ਬਦਲੋ)",
+    go: "ਕਾਪੀ ਕਰੋ ਅਤੇ Google ਖੋਲ੍ਹੋ", goHint: "Google 'ਤੇ: ਸਟਾਰ ਚੁਣੋ, ਫਿਰ ਰਿਵਿਊ ਬਾਕਸ ਵਿੱਚ ਪੇਸਟ ਕਰੋ।",
+    copied: "ਕਾਪੀ ਹੋ ਗਿਆ! Google 'ਤੇ ਰਿਵਿਊ ਬਾਕਸ ਨੂੰ ਦਬਾ ਕੇ ਰੱਖੋ, ਫਿਰ Paste ਦਬਾਓ।",
+    copyFail: "ਆਪਣੇ ਆਪ ਕਾਪੀ ਨਹੀਂ ਹੋਇਆ। ਟੈਕਸਟ ਨੂੰ ਦਬਾ ਕੇ ਕਾਪੀ ਕਰੋ, ਫਿਰ ਬਟਨ ਦੁਬਾਰਾ ਦਬਾਓ।",
+    cont: "Google 'ਤੇ ਜਾਓ", private: "🔒 ਮਾਲਕ ਨੂੰ ਨਿੱਜੀ ਸੁਨੇਹਾ ਭੇਜੋ", msg: "ਸੁਨੇਹਾ (ਸਿਰਫ਼ ਮਾਲਕ ਵੇਖਣਗੇ)",
+    contact: "ਫ਼ੋਨ ਜਾਂ ਈਮੇਲ (ਵਿਕਲਪਿਕ, ਜੇ ਜਵਾਬ ਚਾਹੀਦਾ ਹੈ)", send: "ਨਿੱਜੀ ਤੌਰ 'ਤੇ ਭੇਜੋ", sending: "ਭੇਜ ਰਹੇ ਹਾਂ…",
+    sent: "ਧੰਨਵਾਦ! ਮਾਲਕ ਤੁਹਾਡਾ ਸੁਨੇਹਾ ਵੇਖਣਗੇ।", sendFail: "ਭੇਜ ਨਹੀਂ ਸਕੇ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
+  },
+  or: {
+    sub: "ଆପଣଙ୍କ ଅନୁଭବ ଜଣାନ୍ତୁ", how: "ଆପଣଙ୍କ ଅନୁଭବ କିପରି ଥିଲା?", tapStar: "ରେଟିଂ ଦେବାକୁ ଏକ ତାରକା ଦବାନ୍ତୁ", star: "ତାରକା", liked: "ଆପଣଙ୍କୁ କ'ଣ ଭଲ ଲାଗିଲା? (ବୈକଳ୍ପିକ)",
+    loading: "କିଛି ପରାମର୍ଶ ଲେଖୁଛୁ…", pick: "ଗୋଟିଏ ବାଛନ୍ତୁ, କିମ୍ବା ତଳେ ନିଜେ ଲେଖନ୍ତୁ:",
+    failed: "ପରାମର୍ଶ ଲୋଡ୍ ହେଲା ନାହିଁ। ଦୟାକରି ତଳେ ନିଜେ ଲେଖନ୍ତୁ।", yours: "ଆପଣଙ୍କ ରିଭ୍ୟୁ (ଇଚ୍ଛାମତେ ବଦଳାନ୍ତୁ)",
+    go: "କପି କରି Google ଖୋଲନ୍ତୁ", goHint: "Google ରେ: ତାରକା ବାଛନ୍ତୁ, ତାପରେ ରିଭ୍ୟୁ ବକ୍ସରେ ପେଷ୍ଟ କରନ୍ତୁ।",
+    copied: "କପି ହୋଇଗଲା! Google ରେ ରିଭ୍ୟୁ ବକ୍ସକୁ ଦବାଇ ଧରନ୍ତୁ, ତାପରେ Paste ଦବାନ୍ତୁ।",
+    copyFail: "ନିଜେ କପି ହେଲା ନାହିଁ। ଲେଖାକୁ ଦବାଇ ଧରି କପି କରନ୍ତୁ, ତାପରେ ବଟନ୍ ପୁଣି ଦବାନ୍ତୁ।",
+    cont: "Google କୁ ଯାଆନ୍ତୁ", private: "🔒 ମାଲିକଙ୍କୁ ବ୍ୟକ୍ତିଗତ ବାର୍ତ୍ତା ପଠାନ୍ତୁ", msg: "ବାର୍ତ୍ତା (କେବଳ ମାଲିକ ଦେଖିବେ)",
+    contact: "ଫୋନ୍ କିମ୍ବା ଇମେଲ୍ (ବୈକଳ୍ପିକ, ଉତ୍ତର ଚାହିଁଲେ)", send: "ବ୍ୟକ୍ତିଗତ ଭାବେ ପଠାନ୍ତୁ", sending: "ପଠାଉଛୁ…",
+    sent: "ଧନ୍ୟବାଦ! ମାଲିକ ଆପଣଙ୍କ ବାର୍ତ୍ତା ଦେଖିବେ।", sendFail: "ପଠାଇ ପାରିଲୁ ନାହିଁ। ଦୟାକରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।",
+  },
+};
+const KEY = `draft:${D.slug}`;
+let rating = 0, liked = new Set(), timer, seq = 0, copyFailed = false;
+const code = () => LANGS.find((l) => l[0] === $("lang").value)[1];
+const t = (k) => (T[code()] || T.en)[k];
+const post = (url, body) => fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body), keepalive: true });
+
+$("title").textContent = D.name;
+$("av").textContent = [...D.name.trim()][0]?.toUpperCase() || "★";
+const MOODS = ["😞", "😕", "😐", "🙂", "🤩"];
+for (const [name, , native] of LANGS) $("lang").add(new Option(native, name));
+const pref = navigator.languages.map((l) => l.slice(0, 2)).find((c) => LANGS.some((l) => l[1] === c));
+$("lang").value = LANGS.find((l) => l[1] === pref)?.[0] || "English";
+
+const stars = document.querySelector(".stars");
+for (let i = 1; i <= 5; i++) {
+  const b = document.createElement("button");
+  b.textContent = "☆";
+  b.setAttribute("aria-pressed", "false");
+  b.onclick = () => pick(i);
+  stars.append(b);
+}
+
+function applyLang() {
+  document.documentElement.lang = code();
+  document.querySelectorAll("[data-t]").forEach((el) => (el.textContent = t(el.dataset.t)));
+  if (copyFailed) $("go").textContent = t("cont");
+  [...stars.children].forEach((b, i) => b.setAttribute("aria-label", `${i + 1} ${t("star")}`));
+}
+$("lang").onchange = () => { applyLang(); if (rating) load(); };
+
+function pick(i) {
+  rating = i;
+  [...stars.children].forEach((s, j) => {
+    s.textContent = j < i ? "★" : "☆";
+    s.classList.toggle("on", j < i);
+    s.setAttribute("aria-pressed", j === i - 1);
+  });
+  $("starhint").hidden = true;
+  $("mood").textContent = MOODS[i - 1];
+  $("chipsWrap").hidden = !D.keywords.length;
+  $("step2").hidden = false;
+  load();
+}
+
+for (const k of D.keywords) {
+  const b = document.createElement("button");
+  b.textContent = k;
+  b.setAttribute("aria-pressed", "false");
+  b.onclick = () => {
+    liked.has(k) ? liked.delete(k) : liked.add(k);
+    b.setAttribute("aria-pressed", liked.has(k));
+    clearTimeout(timer); timer = setTimeout(load, 600); // wait for the customer to finish tapping
+  };
+  $("chips").append(b);
+}
+
+async function load() {
+  const id = ++seq; // ignore answers from older requests
+  $("list").lang = $("text").lang = code();
+  $("list").innerHTML = '<div class="skeleton"></div>'.repeat(3);
+  $("status").textContent = t("loading");
+  const qs = new URLSearchParams({ slug: D.slug, rating, lang: $("lang").value, liked: [...liked].join("|") });
+  const r = await fetch(`/api/suggest?${qs}`, { signal: AbortSignal.timeout(15000) }).then((r) => r.json()).catch(() => ({}));
+  if (id !== seq) return;
+  $("list").innerHTML = "";
+  $("status").textContent = r.reviews?.length ? t("pick") : t("failed");
+  for (const text of r.reviews || []) {
+    const b = document.createElement("button");
+    b.textContent = text;
+    b.setAttribute("aria-pressed", "false");
+    b.onclick = () => {
+      [...$("list").children].forEach((x) => x.setAttribute("aria-pressed", x === b));
+      $("text").value = text;
+      syncGo();
+    };
+    $("list").append(b);
+  }
+}
+
+const syncGo = () => ($("go").disabled = !$("text").value.trim());
+$("text").oninput = syncGo;
+
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch {}
+  $("text").select(); // older phones / in-app scanners without the clipboard API
+  try { return document.execCommand("copy"); } catch { return false; }
+}
+
+$("go").onclick = async () => {
+  const text = $("text").value;
+  sessionStorage.setItem(KEY, JSON.stringify({ rating, lang: $("lang").value, text }));
+  if (!copyFailed && !(await copy(text))) {
+    copyFailed = true;
+    $("text").select();
+    $("gohint").textContent = t("copyFail");
+    $("go").textContent = t("cont");
+    return;
+  }
+  $("go").disabled = true;
+  $("donemsg").textContent = t("copied");
+  $("done").hidden = false;
+  post("/api/event", { slug: D.slug, type: "copy", rating, lang: $("lang").value });
+  setTimeout(() => (location.href = D.googleUrl), 1500); // give them time to read the paste tip
+};
+
+$("fb").onsubmit = async (e) => {
+  e.preventDefault();
+  $("fbsend").disabled = true;
+  $("fbstatus").textContent = t("sending");
+  const r = await post("/api/feedback", { slug: D.slug, rating, message: $("fbmsg").value, contact: $("fbcontact").value }).catch(() => null);
+  if (r?.ok) { $("fb").hidden = true; $("fbstatus").textContent = t("sent"); }
+  else { $("fbsend").disabled = false; $("fbstatus").textContent = t("sendFail"); }
+};
+
+// Count one scan per visit, and restore the draft if they come back from Google.
+if (!sessionStorage.getItem(`scan:${D.slug}`)) {
+  sessionStorage.setItem(`scan:${D.slug}`, "1");
+  post("/api/event", { slug: D.slug, type: "scan" });
+}
+const saved = JSON.parse(sessionStorage.getItem(KEY) || "null");
+if (saved?.lang) $("lang").value = saved.lang;
+applyLang();
+if (saved?.rating) { pick(saved.rating); $("text").value = saved.text || ""; syncGo(); }
+// The back button may restore this page as it was when we left for Google.
+addEventListener("pageshow", () => { $("done").hidden = true; syncGo(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+# Production: the app plus Caddy (automatic HTTPS). Secrets come from .env next to this file.
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      BASE_URL: https://dukanreviews.com
+      TRUST_PROXY: "1"
+    volumes:
+      - data:/data            # SQLite lives here and survives rebuilds
+    read_only: true
+    tmpfs: [/tmp]
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data      # HTTPS certificates
+      - caddy_config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+
+volumes:
+  data:
+  caddy_data:
+  caddy_config:

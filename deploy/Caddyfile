@@ -1,0 +1,9 @@
+# Caddy gets and renews the HTTPS certificates automatically.
+www.dukanreviews.com {
+	redir https://dukanreviews.com{uri} permanent
+}
+
+dukanreviews.com {
+	encode zstd gzip
+	reverse_proxy app:3000
+}

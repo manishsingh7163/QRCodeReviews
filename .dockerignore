@@ -1,0 +1,6 @@
+# Never bake secrets or local data into the image.
+.env
+data.db*
+node_modules
+.git
+deploy
